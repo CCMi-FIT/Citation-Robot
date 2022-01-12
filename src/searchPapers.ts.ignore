@@ -1,0 +1,22 @@
+import got from "got";
+import * as fs from "fs";
+
+const inputFile = "./input/papersToSearch.json";
+
+export async function searchPapers(name: string) {
+  const papers = await got
+    .get(`https://api.semanticscholar.org/graph/v1/paper/search?query=${name}`)
+    .json();
+  return papers;
+}
+
+const inputContents = fs.readFileSync(inputFile);
+const paperNames = JSON.parse(inputContents);
+
+paperNames.forEach(paper => {
+  searchPapers(paper).then(
+    result => {
+      console.log(result);
+    }
+  );
+});
