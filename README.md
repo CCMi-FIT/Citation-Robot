@@ -2,9 +2,17 @@
 
 Script using the [Semantic Scholar API](https://www.semanticscholar.org/product/api#Documentation) for making citations reports of papers.
 
+## Installation
+
+The Robot needs NodeJs >= 16 & NPM running on the machine.
+
+The installation & compilation is managed by the `install.sh` bash script.
+
 ## Usage
 
-The scripts takes `input/papers.json` file, which is supposed to be an array of Semantic Scholar paper IDs, such as:
+The Robot is run by `npm run run`.
+
+The Robot takes `input/papers.json` file, which is supposed to be an array of Semantic Scholar paper IDs, such as:
 
 ```json
 [
