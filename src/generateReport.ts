@@ -1,9 +1,7 @@
 import * as fs from "fs";
 import jsonexport from "jsonexport";
 import { makeReport } from "./makeReport";
-import { CsvReportLine, getYearsOfReport, PaperReport } from "./model";
-
-const outputFile = "./output/report.csv";
+import { CsvReportLine, getYearsOfReport, PaperReport, Project } from "./model";
 
 function reportLineToCsvLine(paperReport: PaperReport, years: number[]): CsvReportLine {
   const csvLine =
@@ -28,13 +26,14 @@ function reportLineToCsvLine(paperReport: PaperReport, years: number[]): CsvRepo
   );
 }
 
-export async function generateReport(): Promise<void> {
-  console.log("Generating report...");
-  const report = await makeReport();
+export async function generateReport(project: Project): Promise<void> {
+  console.log(`Generating report for project ${project.name}`);
+  const report = await makeReport(project);
   const years = getYearsOfReport(report);
   const csvReport = report.map(line => reportLineToCsvLine(line, years));
   console.log(csvReport);
   const csv = await jsonexport(csvReport);
+  const outputFile = `./output/report-${project.name}.csv`;
   console.log("Saving report to " + outputFile + "...");
   fs.writeFileSync(outputFile, csv);
   console.log("Done.");

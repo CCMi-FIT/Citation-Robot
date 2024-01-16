@@ -1,14 +1,11 @@
 import _ from "lodash";
-import * as fs from "fs";
-import type { Paper, PaperWithCitations, PaperReport, Report, CitationReport } from "./model";
+import type { Paper, PaperWithCitations, PaperReport, Report, CitationReport, Project } from "./model";
 import { getPaper, getPaperWithCitations } from "./api";
-
-const inputFile = "./input/papers.json";
 
 function isSelfCited(citedPaper: Paper, paper: Paper): boolean {
   const cpAuthorsIds = citedPaper.authors.map(a => a.authorId);
   const authorsIds = paper.authors.map(a => a.authorId);
-  return _.intersection(authorsIds, cpAuthorsIds).length > 0 ? true : false;
+  return _.intersection(authorsIds, cpAuthorsIds).length > 0;
 }
 
 async function getCitingPapers(citedPaper: PaperWithCitations): Promise<Paper[]> {
@@ -41,8 +38,7 @@ async function makeReportForPaperId(citedPaperId: string): Promise<PaperReport> 
     title: citedPaper.title,
     year: citedPaper.year,
     citations,
-  }
-  ;
+  };
   return report;
 }
 
@@ -51,10 +47,8 @@ async function makePaperReports(papersIds: string[]): Promise<PaperReport[]> {
   return Promise.all(paperReportsPms);
 }
 
-export async function makeReport(): Promise<Report> {
-  console.log("Making report...");
-  const contents = fs.readFileSync(inputFile, { encoding: "utf-8" });
-  const papersIds: string[] = JSON.parse(contents);
-  const papersReports = await makePaperReports(papersIds);
+export async function makeReport(project: Project): Promise<Report> {
+  console.log(`Making report for project ${project.name}...`);
+  const papersReports = await makePaperReports(project.publicationsIds);
   return _.sortBy(papersReports, paperReport => paperReport.year);
 }

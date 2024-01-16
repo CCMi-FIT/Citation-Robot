@@ -1,5 +1,10 @@
 import _ from "lodash";
 
+export type Project = {
+  name: string;
+  publicationsIds: string[];
+};
+
 export type Author = {
   authorId: string;
   name: string;
