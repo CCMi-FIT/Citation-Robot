@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "slate": "rm -r node_modules && npm install",
-    "build": "webpack",
+    "build": "npx webpack",
     "run": "node dist/index.js",
     "dev": "nodemon --watch src --watch input --ext ts,js,json --exec npm run build \\&\\& npm run run"
   },

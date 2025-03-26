@@ -9,7 +9,7 @@ function isSelfCited(citedPaper: Paper, paper: Paper): boolean {
 }
 
 async function getCitingPapers(citedPaper: PaperWithCitations): Promise<Paper[]> {
-  const citingPapersIds = citedPaper.citations.map(citation => citation.paperId);
+  const citingPapersIds = citedPaper.citations.map(citation => citation.paperId).filter(id => id !== null);
   const getPapersPms = citingPapersIds.map(getPaper);
   return Promise.all(getPapersPms);
 }

@@ -9,6 +9,9 @@ import type { Paper, PaperWithCitations } from "./model";
 /*}*/
 
 export async function getPaper(id: string): Promise<Paper> {
+  if (!id) {
+    throw new Error("paper id is null");
+  }
   const paper = await got.get(
     `https://api.semanticscholar.org/graph/v1/paper/${id}?fields=title,authors,year`
   ).json<Paper>();
